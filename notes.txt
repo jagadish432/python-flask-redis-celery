@@ -1,0 +1,28 @@
+earlier pip was 19.* version and pipenv was 2018.7.1 version in my system.
+
+I ran into problems while doing "pipenv install flask"
+
+so downgraded both pip and pipenv version by running the below commands
+pip install pipenv==2018.6.25
+pip install pip==18.0 (not worked, so ran this command-> "c:\users\aio-63\appdata\local\programs\python\python36\python.exe -m pip install pip==18.0")
+pipenv install
+
+env activated
+
+------------
+again same problem occurred in the virualenv as they are again installed with latest versions.
+
+now, ran the below cmds in virtualenv
+pip install pipenv==2018.6.25
+c:\users\aio-63\.virtualenvs\flask-redis-celery-t2js7x3d\scripts\python.exe -m pip install pip==18.0
+
+
+
+
+
+<a class="btn btn-primary" href="{{ url_for('signup') }}">Sign up!</a>\
+
+
+celery -A app.client worker -l info -P gevent
+
+flower -A app.client --port=5555
