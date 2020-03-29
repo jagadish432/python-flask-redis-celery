@@ -114,6 +114,7 @@ def login(sql_query, user):
         db.close()
         return record_exists
 
+
 def create_notification_record(sql_query, notify, user):
     record_created = False
     try:

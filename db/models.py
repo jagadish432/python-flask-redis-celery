@@ -1,5 +1,6 @@
 # contains classes/models used in this project
 
+
 class User:
     name = ''
     phone = ''
@@ -15,6 +16,7 @@ class Notify:
     scheduled_at = ''
     duration = 0
     status = 'Waiting'
+    
     def __init__(self, message, user):
         self.message = message
         self.user_id = user.id

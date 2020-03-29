@@ -4,6 +4,10 @@ from celery import Celery
 from db.db import *
 from db.models import *
 from utils.common import *
+
+import time
+
+
 app = Flask(__name__)
 app.config.from_object("config")
 app.secret_key = app.config['SECRET_KEY']
@@ -13,7 +17,7 @@ mail = Mail(app)
 
 
 # setup celery client
-client = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
+client = Celery(app.name, broker=app.config['CELERY_BROKER_URL'], backend=app.config['CELERY_RESULT_BACKEND'])
 # client.conf.update(app.config)
 
 
@@ -22,8 +26,12 @@ client = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
 def send_mail(data):
     """ Function to send emails.
     """
+
+    # the below sleep/waiting time is just to test celery concurrency workers
+    print("going to sleep for 30 secs")
+    time.sleep(30)
     with app.app_context():
-        msg = Message("Ping!",
+        msg = Message("From jagadeesh's notification project !!",
                     sender="maheshbabu4329@gmail.com",
                     recipients=[data['email']])
         msg.body = data['message']
@@ -71,8 +79,9 @@ def signin():
                 flash("User logged in successfully.", "info")
             else:
                 flash("Wrong password, please try again.", "danger")
-                return redirect(url_for('index'))
+                return redirect(url_for('signin'))
     return redirect(url_for('notify'))
+
 
 @app.route('/notify', methods=['GET','POST'])
 def notify():
@@ -114,7 +123,9 @@ def notify():
             flash("Unable to create notification scheduler, please try again!!", "danger")
         else:
             flash("Successfully created notification scheduler", "info")
-
+            # print("going to sleep for 30 secs")
+            # time.sleep(30)
+            # countdown attribute to apply_async is meant for "execute this celery task after completion of this countdown
             send_mail.apply_async(args=[{"email": user.email, "message": notify.message}], countdown=notify.duration)
             # send_mail(data={"email": user.email, "message": notify.message})
             flash(f"Email will be sent to {user.email} in {request.form['duration']} {duration_unit}")
